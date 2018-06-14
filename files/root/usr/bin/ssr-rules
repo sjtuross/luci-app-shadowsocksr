@@ -16,6 +16,7 @@ usage() {
 		    -l <local_port>         port number of shadowsocks local server
 		    -S <server_ips>         ip address of shadowsocks remote UDP server
 		    -L <local_port>         port number of shadowsocks local UDP server
+		    -D <wan_target>         the default target of wan proxy mode
 		    -B <ip_list_file>       a file whose content is bypassed ip list
 		    -b <wan_ips>            wan ip of will be bypassed
 		    -W <ip_list_file>       a file whose content is forwarded ip list
@@ -189,7 +190,7 @@ include_ac_rules() {
 	-A SSR_SPEC_LAN_AC -j ${LAN_TARGET:=SSR_SPEC_WAN_AC}
 	-A SSR_SPEC_WAN_AC -m set --match-set ssr_spec_dst_fw dst -j SSR_SPEC_WAN_FW
 	-A SSR_SPEC_WAN_AC -m set --match-set ssr_spec_dst_bp dst -j RETURN
-	-A SSR_SPEC_WAN_AC -j SSR_SPEC_WAN_FW
+	-A SSR_SPEC_WAN_AC -j ${WAN_TARGET:=SSR_SPEC_WAN_FW}
 	$(gen_prerouting_rules $protocol)
 	COMMIT
 EOF
@@ -207,7 +208,7 @@ gen_prerouting_rules() {
 	done
 }
 
-while getopts ":s:l:S:L:B:b:W:w:I:d:a:e:oOuUfh" arg; do
+while getopts ":s:l:S:L:D:B:b:W:w:I:d:a:e:oOuUfh" arg; do
 	case "$arg" in
 		s)
 			server=$(for host in $OPTARG; do ping $host -c 1 -w 1 | sed '1{s/[^(]*(//;s/).*//;q}' ; done)
@@ -220,6 +221,9 @@ while getopts ":s:l:S:L:B:b:W:w:I:d:a:e:oOuUfh" arg; do
 			;;
 		L)
 			LOCAL_PORT=$OPTARG
+			;;
+		D)
+			WAN_TARGET=$OPTARG
 			;;
 		B)
 			WAN_BP_LIST=$OPTARG

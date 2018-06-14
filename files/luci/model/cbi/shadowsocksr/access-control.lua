@@ -47,6 +47,11 @@ m = Map(shadowsocksr, "%s - %s" %{translate("ShadowSocksR"), translate("Access C
 s = m:section(TypedSection, "access_control", translate("Zone WAN"))
 s.anonymous = true
 
+o = s:option(ListValue, "wan_target", translate("Proxy Mode"))
+o:value("SSR_SPEC_WAN_FW", translate("Mainland"))
+o:value("RETURN", translate("Oversea"))
+o.rmempty = false
+
 o = s:option(Value, "wan_bp_list", translate("Bypassed IP List"))
 o:value("/dev/null", translate("NULL - As Global Proxy"))
 if gfwroute then o:value("/dev/flag_gfwlist", translate("Only Proxy GFW-List")) end

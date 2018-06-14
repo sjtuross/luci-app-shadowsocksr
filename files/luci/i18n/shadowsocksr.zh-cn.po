@@ -186,3 +186,12 @@ msgstr "注意"
 
 msgid "Dnsmasq Config for ShadowsocksR. This may CRASH DNSMASQ!"
 msgstr "自定义 DNSMASQ 的 ShadowsocksR 列表, 这可能让DNSMASQ崩溃, 请参考以下的格式"
+
+msgid "Proxy Mode"
+msgstr "代理模式"
+
+msgid "Mainland"
+msgstr "大陆模式"
+
+msgid "Oversea"
+msgstr "海外模式"

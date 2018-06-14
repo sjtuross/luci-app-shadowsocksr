@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-shadowsocksr
 PKG_VERSION:=1.9.0
-PKG_RELEASE:=5
+PKG_RELEASE:=6
 
 PKG_LICENSE:=GPLv3
 PKG_LICENSE_FILES:=LICENSE
@@ -26,7 +26,7 @@ define Package/luci-app-shadowsocksr
 	SUBMENU:=3. Applications
 	TITLE:=LuCI Support for shadowsocksR-libev
 	PKGARCH:=all
-	DEPENDS:=+iptables +ipset +curl +ip +iptables-mod-tproxy
+	DEPENDS:=+iptables +ipset +curl +ip +iptables-mod-tproxy +shadowsocksr-libev +libsodium
 endef
 
 define Package/luci-app-shadowsocksr/description
@@ -69,6 +69,8 @@ define Package/luci-app-shadowsocksr/install
 	$(INSTALL_DATA) ./files/luci/model/cbi/shadowsocksr/*.lua $(1)/usr/lib/lua/luci/model/cbi/shadowsocksr/
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/shadowsocksr
 	$(INSTALL_DATA) ./files/luci/view/shadowsocksr/*.htm $(1)/usr/lib/lua/luci/view/shadowsocksr/
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_DATA) ./files/root/etc/chnroute.list $(1)/etc/chnroute.list
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DATA) ./files/root/etc/config/shadowsocksr $(1)/etc/config/shadowsocksr
 	$(INSTALL_DIR) $(1)/etc/init.d

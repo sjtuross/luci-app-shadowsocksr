@@ -129,6 +129,7 @@ start_rules() {
 	/usr/bin/ssr-rules \
 		-s "$(config_foreach get_server_ips servers)" \
 		-l "$(uci_get_by_type transparent_proxy local_port 1234)" \
+		-D "$(uci_get_by_type access_control wan_target)" \
 		-B "$(uci_get_by_type access_control wan_bp_list)" \
 		-b "$(uci_get_by_type access_control wan_bp_ips)" \
 		-W "$(uci_get_by_type access_control wan_fw_list)" \
@@ -238,8 +239,8 @@ stop() {
 
 add_cron() {
 	sed -i '/shadowsocksr_watchdog/d' $CRON_FILE
-	echo '0   */3   * * *  rm -f /var/log/shadowsocksr_watchdog.log 2>&1' >> $CRON_FILE
-	echo '*    *    * * * /etc/init.d/shadowsocksr watchdog >> /var/log/shadowsocksr_watchdog.log 2>&1' >> $CRON_FILE
+	echo '0   */6   * * *  rm -f /var/log/shadowsocksr_watchdog.log 2>&1' >> $CRON_FILE
+	echo '0   */1   * * * /etc/init.d/shadowsocksr watchdog >> /var/log/shadowsocksr_watchdog.log 2>&1' >> $CRON_FILE
 	/etc/init.d/cron restart
 }
 
